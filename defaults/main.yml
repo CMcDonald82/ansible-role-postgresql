@@ -113,29 +113,25 @@ postgresql_pg_ctl_options: []
 # Store postgres' configuration files here
 postgresql_conf_directory: "/etc/postgresql/{{ postgresql_version }}/{{ postgresql_cluster_name }}"
 
-# Use data in another directory
+# Specifies the directory to use for data storage.
 # (change requires restart)
 postgresql_data_directory: "/var/lib/postgresql/{{ postgresql_version }}/{{ postgresql_cluster_name }}"
 
-# Host-based authentication file
+# Specifies the configuration file for host-based authentication (customarily called pg_hba.conf).
 # (change requires restart)
 postgresql_hba_file: "{{ postgresql_conf_directory }}/pg_hba.conf"
 
-# Ident configuration file
+# Specifies the configuration file for user name mapping (customarily called pg_ident.conf).
 # (change requires restart)
 postgresql_ident_file: "{{ postgresql_conf_directory }}/pg_ident.conf"
 
-# Directory to store runtime data such as PIDs
-postgresql_runtime_directory: "/var/run/postgresql"
-
+# Specifies the name of an additional process-ID (PID) file that the server should create for use by server administration programs.
 # If external_pid_file is not explicitly set, no extra PID file is written.
-# write an extra PID file
 # (change requires restart)
 postgresql_external_pid_file: "{{ postgresql_runtime_directory }}/{{ postgresql_version }}-{{ postgresql_cluster_name }}.pid"
 
-# directory where log files are written,
-# can be absolute or relative to PGDATA
-postgresql_log_directory: "/var/log/postgresql"
+# Directory to store runtime data such as PIDs
+postgresql_runtime_directory: "/var/run/postgresql"
 
 
 #------------------------------------------------------------------------------
@@ -147,11 +143,9 @@ postgresql_log_directory: "/var/log/postgresql"
 
 # - Connection Settings -
 
-# Use 'localhost' for local addresses only. Use '*' alone to
-# listen on every available address.
-# what IP address(es) to listen on;
-# comma-separated list of addresses;
-# defaults to 'localhost'; use '*' for all
+# Comma-separated list of addresses;
+# Defaults to 'localhost'; use '*' for all
+# Use 'localhost' for local addresses only. Use '*' alone to listen on every available address.
 # (change requires restart)
 postgresql_listen_addresses:
   - localhost
@@ -169,7 +163,7 @@ postgresql_superuser_reserved_connections: 3
 
 # comma-separated list of directories
 # (change requires restart)
-postgresql_unix_socket_directories: # comma-separated list of directories
+postgresql_unix_socket_directories:
   - /var/run/postgresql
 
 # (change requires restart)
@@ -187,40 +181,6 @@ postgresql_bonjour: off
 # (change requires restart)
 postgresql_bonjour_name: '' 
 
-# - Security and Authentication -
-
-# 1s-600s
-postgresql_authentication_timeout: 60s
-postgresql_ssl: off
-
-# allowed SSL ciphers
-postgresql_ssl_ciphers:
-  - 'HIGH'
-  - 'MEDIUM'
-  - '+3DES'
-  - '!aNULL'
-
-postgresql_ssl_prefer_server_ciphers: on
-postgresql_ssl_ecdh_curve: 'prime256v1'
-
-# This is set in the nginx role - should be /etc/ssl/dhparams.pem
-postgresql_ssl_dh_params_file: ''  
-
-# TODO: See what we need to set the ssl files to when we setup SSL
-postgresql_ssl_cert_file: '/etc/ssl/certs/ssl-cert-snakeoil.pem'
-postgresql_ssl_key_file: '/etc/ssl/private/ssl-cert-snakeoil.key'
-postgresql_ssl_ca_file: ''
-postgresql_ssl_crl_file: ''
-
-# md5 or scram-sha-256
-postgresql_password_encryption: 'scram-sha-256'
-postgresql_db_user_namespace: off
-postgresql_row_security: on
-
-# Kerberos and GSSAPI
-postgresql_krb_server_keyfile: ''
-postgresql_krb_caseins_users: off
-
 # - TCP Keepalives -
 # see "man 7 tcp" for details
 
@@ -237,8 +197,41 @@ postgresql_tcp_keepalives_interval: 0
 postgresql_tcp_keepalives_count: 0
 
 
+# - Security and Authentication -
+
+# 1s-600s
+postgresql_authentication_timeout: 60s
+postgresql_ssl: off
+postgresql_ssl_ca_file: ''
+postgresql_ssl_cert_file: '/etc/ssl/certs/ssl-cert-snakeoil.pem'
+postgresql_ssl_crl_file: ''
+postgresql_ssl_key_file: '/etc/ssl/private/ssl-cert-snakeoil.key'
+
+# allowed SSL ciphers
+postgresql_ssl_ciphers:
+  - 'HIGH'
+  - 'MEDIUM'
+  - '+3DES'
+  - '!aNULL'
+
+postgresql_ssl_prefer_server_ciphers: on
+postgresql_ssl_ecdh_curve: 'prime256v1'
+
+# md5 or scram-sha-256
+postgresql_password_encryption: 'scram-sha-256'
+
+# This is set in the nginx role - should be /etc/ssl/dhparams.pem
+postgresql_ssl_dh_params_file: '/etc/ssl/dhparams.pem'  
+
+# Kerberos and GSSAPI
+postgresql_krb_server_keyfile: ''
+postgresql_krb_caseins_users: off
+
+postgresql_db_user_namespace: off
+
+
 #------------------------------------------------------------------------------
-# RESOURCE USAGE (EXCEPT WAL)
+# RESOURCE CONSUMPTION (EXCEPT WAL)
 #------------------------------------------------------------------------------
 
 # - Memory -
@@ -297,9 +290,6 @@ postgresql_temp_file_limit: -1
 # (change requires restart)
 postgresql_max_files_per_process: 1000 
 
-# (change requires restart) 
-postgresql_shared_preload_libraries: []
-
 # - Cost-Based Vacuum Delay -
 
 # 0-100 milliseconds
@@ -345,12 +335,13 @@ postgresql_max_parallel_workers_per_gather: 2
 # maximum number of max_worker_processes that can be used in parallel queries 
 postgresql_max_parallel_workers: 8 
 
+# measured in pages, 0 disables
+postgresql_backend_flush_after: 0 
+
 # 1min-60d; -1 disables; 0 is immediate
 # (change requires restart)
 postgresql_old_snapshot_threshold: -1 
 
-# measured in pages, 0 disables
-postgresql_backend_flush_after: 0 
 
 #------------------------------------------------------------------------------
 # WRITE AHEAD LOG
@@ -385,12 +376,12 @@ postgresql_wal_sync_method: fsync
 # recover from partial page writes
 postgresql_full_page_writes: on
 
-# enable compression of full-page writes
-postgresql_wal_compression: off 
-
 # also do full page writes of non-critical updates
 # (change requires restart)
 postgresql_wal_log_hints: off 
+
+# enable compression of full-page writes
+postgresql_wal_compression: off 
 
 # min 32kB, -1 sets based on shared_buffers
 # (change requires restart)
@@ -412,17 +403,18 @@ postgresql_commit_siblings: 5
 
 # range 30s-1d
 postgresql_checkpoint_timeout: 5min  
-postgresql_max_wal_size: 1GB
-postgresql_min_wal_size: 80MB
 
 # checkpoint target duration, 0.0 - 1.0
-postgresql_checkpoint_completion_target: 0.5   
+postgresql_checkpoint_completion_target: 0.5 
 
 # measured in pages, 0 disables
 postgresql_checkpoint_flush_after: 256kB 
 
 # 0 disables
 postgresql_checkpoint_warning: 30s   
+
+postgresql_max_wal_size: 1GB
+postgresql_min_wal_size: 80MB
 
 # - Archiving -
 
@@ -452,12 +444,15 @@ postgresql_archive_timeout: 0
 # max number of walsender processes
 postgresql_max_wal_senders: 10
 
-postgresql_wal_keep_segments:  0    # in logfile segments, 16MB each; 0 disables
-postgresql_wal_sender_timeout: 60s  # in milliseconds; 0 disables
-
 # max number of replication slots
 # (change requires restart)
 postgresql_max_replication_slots: 10
+
+# in logfile segments, 16MB each; 0 disables
+postgresql_wal_keep_segments:  0    
+
+# in milliseconds; 0 disables
+postgresql_wal_sender_timeout: 60s  
 
 # collect timestamp of transaction commit
 # (change requires restart)
@@ -520,12 +515,13 @@ postgresql_max_sync_workers_per_subscription: 2
 
 
 #------------------------------------------------------------------------------
-# QUERY TUNING
+# QUERY PLANNING
 #------------------------------------------------------------------------------
 
 # - Planner Method Configuration -
 
 postgresql_enable_bitmapscan: on
+postgresql_enable_gathermerge: on
 postgresql_enable_hashagg: on
 postgresql_enable_hashjoin: on
 postgresql_enable_indexscan: on
@@ -555,10 +551,10 @@ postgresql_cpu_index_tuple_cost: 0.005
 postgresql_cpu_operator_cost: 0.0025  
 
 # same scale as above
-postgresql_parallel_tuple_cost: 0.1
+postgresql_parallel_setup_cost: 1000.0
 
 # same scale as above
-postgresql_parallel_setup_cost: 1000.0
+postgresql_parallel_tuple_cost: 0.1
 
 postgresql_min_parallel_table_scan_size: 8MB
 postgresql_min_parallel_index_scan_size: 512kB
@@ -622,6 +618,10 @@ postgresql_logging_collector: off
 
 # These are only used if logging_collector is on:
 
+# directory where log files are written,
+# can be absolute or relative to PGDATA
+postgresql_log_directory: "/var/log/postgresql"
+
 # Log file name pattern, can include strftime() escapes
 postgresql_log_filename: postgresql-%Y-%m-%d_%H%M%S.log
 
@@ -629,17 +629,17 @@ postgresql_log_filename: postgresql-%Y-%m-%d_%H%M%S.log
 # begin with 0 to use octal notation
 postgresql_log_file_mode: '0600'
 
-# If on, an existing log file with the same name as the new log file will be
-# truncated rather than appended to. But such truncation only occurs on
-# time-driven rotation, not on restarts or size-driven rotation. Default is
-# off, meaning append to existing files in all cases.
-postgresql_log_truncate_on_rotation: off
-
 # Automatic rotation of logfiles will happen after that time. 0 disables.
 postgresql_log_rotation_age: 1d
 
 # Automatic rotation of logfiles will happen after that much log output. 0 disables.
 postgresql_log_rotation_size: 10MB
+
+# If on, an existing log file with the same name as the new log file will be
+# truncated rather than appended to. But such truncation only occurs on
+# time-driven rotation, not on restarts or size-driven rotation. Default is
+# off, meaning append to existing files in all cases.
+postgresql_log_truncate_on_rotation: off
 
 # These are relevant when logging to syslog:
 
@@ -762,23 +762,24 @@ postgresql_update_process_title: on
 # - Query/Index Statistics Collector -
 
 postgresql_track_activities: on
+
+# (change requires restart)
+postgresql_track_activity_query_size: 1024
+
 postgresql_track_counts: on
 postgresql_track_io_timing: off
 
 # none, pl, all
 postgresql_track_functions: none 
 
-# (change requires restart)
-postgresql_track_activity_query_size: 1024
-
 postgresql_stats_temp_directory: '/var/run/postgresql/10-main.pg_stat_tmp'
 
 # - Statistics Monitoring -
 
+postgresql_log_statement_stats: off
 postgresql_log_parser_stats: off
 postgresql_log_planner_stats: off
 postgresql_log_executor_stats: off
-postgresql_log_statement_stats: off
 
 
 #------------------------------------------------------------------------------
@@ -839,6 +840,8 @@ postgresql_search_path:
   - '"$user"'
   - public
 
+postgresql_row_security: on 
+
 # a tablespace name, '' uses the default
 postgresql_default_tablespace: '' 
 
@@ -860,16 +863,15 @@ postgresql_lock_timeout: 0
 # in milliseconds, 0 is disabled
 postgresql_idle_in_transaction_session_timeout: 0
 
-postgresql_vacuum_freeze_min_age: 50000000
 postgresql_vacuum_freeze_table_age: 150000000
-postgresql_vacuum_multixact_freeze_min_age: 5000000
+postgresql_vacuum_freeze_min_age: 50000000
 postgresql_vacuum_multixact_freeze_table_age: 150000000
+postgresql_vacuum_multixact_freeze_min_age: 5000000
 
 # hex, escape
 postgresql_bytea_output: hex  
 postgresql_xmlbinary: base64
 postgresql_xmloption: content
-postgresql_gin_fuzzy_search_limit: 0
 postgresql_gin_pending_list_limit: 4MB
 
 # - Locale and Formatting -
@@ -911,11 +913,17 @@ postgresql_lc_time: "{{ postgresql_locale }}"
 # default configuration for text search
 postgresql_default_text_search_config: pg_catalog.english
 
+# - Shared Library Preloading -
+
+postgresql_local_preload_libraries: []
+postgresql_session_preload_libraries: []
+# (change requires restart) 
+postgresql_shared_preload_libraries: []
+
 # - Other Defaults -
 
 postgresql_dynamic_library_path: '$libdir'
-postgresql_local_preload_libraries: []
-postgresql_session_preload_libraries: []
+postgresql_gin_fuzzy_search_limit: 0
 
 #------------------------------------------------------------------------------
 # LOCK MANAGEMENT
@@ -958,7 +966,7 @@ postgresql_escape_string_warning: on
 postgresql_lo_compat_privileges: off
 postgresql_operator_precedence_warning: off
 postgresql_quote_all_identifiers: off
-#postgresql_sql_inheritance:             on # no longer needed - this item is not present in pstgresql.conf file for Postgres version 10
+#postgresql_sql_inheritance:             on # no longer needed - this item is not present in postgresql.conf file for Postgres version 10. May be needed for older versions
 postgresql_standard_conforming_strings: on
 postgresql_synchronize_seqscans: on
 
