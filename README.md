@@ -67,17 +67,17 @@ postgresql_databases: []
 Databases to ensure exist.
 Specify entries as a list of hashes having this schema:
 ```
-- name: exampledb # required; the rest are optional
-  lc_collate: # defaults to 'en_US.UTF-8'
-  lc_ctype: # defaults to 'en_US.UTF-8'
-  encoding: # defaults to 'UTF-8'
-  template: # defaults to 'template0'
-  login_host: # defaults to 'localhost'
-  login_password: # defaults to not set
-  login_user: # defaults to '{{ postgresql_user }}'
-  login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
-  port: # defaults to not set
-  state: # defaults to 'present'
+  - name: exampledb # required; the rest are optional
+    lc_collate: # defaults to 'en_US.UTF-8'
+    lc_ctype: # defaults to 'en_US.UTF-8'
+    encoding: # defaults to 'UTF-8'
+    template: # defaults to 'template0'
+    login_host: # defaults to 'localhost'
+    login_password: # defaults to not set
+    login_user: # defaults to '{{ postgresql_user }}'
+    login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
+    port: # defaults to not set
+    state: # defaults to 'present'
 ```
 
 
@@ -89,17 +89,17 @@ postgresql_users: []
 Users to ensure exist.
 Specify entries as a list of hashes having this schema:
 ```
-- name: exampleuser #required; the rest are optional
-  password: # defaults to not set
-  priv: # defaults to not set
-  role_attr_flags: # defaults to not set
-  db: # defaults to not set
-  login_host: # defaults to 'localhost'
-  login_password: # defaults to not set
-  login_user: # defaults to '{{ postgresql_user }}'
-  login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
-  port: # defaults to not set
-  state: # defaults to 'present'
+  - name: exampleuser #required; the rest are optional
+    password: # defaults to not set
+    priv: # defaults to not set
+    role_attr_flags: # defaults to not set
+    db: # defaults to not set
+    login_host: # defaults to 'localhost'
+    login_password: # defaults to not set
+    login_user: # defaults to '{{ postgresql_user }}'
+    login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
+    port: # defaults to not set
+    state: # defaults to 'present'
 ```
 
 
