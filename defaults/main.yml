@@ -68,9 +68,6 @@ postgresql_runtime_directory: "/var/run/postgresql"
 # CONNECTIONS & AUTHENTICATION
 #------------------------------------------------------------------------------
 
-# Docs
-# https://www.postgresql.org/docs/current/static/runtime-config-connection.html
-
 # - Connection Settings -
 
 # Comma-separated list of addresses;

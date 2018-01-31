@@ -74,7 +74,7 @@ Specify entries as a list of hashes having this schema:
     template: # defaults to 'template0'
     login_host: # defaults to 'localhost'
     login_password: # defaults to not set
-    login_user: # defaults to '{{ postgresql_user }}'
+    login_user: # defaults to '{{ postgresql_admin_user }}'
     login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
     port: # defaults to not set
     state: # defaults to 'present'
@@ -178,4 +178,30 @@ In addition to the above variables, there are a variety of variables associated 
 
 
 ## Example Playbook
+
+```
+- name: Setup Ubuntu server with PostgreSQL 10
+  hosts: all
+  remote_user: "{{ remote_username }}"
+  become: yes
+
+  roles:
+    - role: postgresql_role
+      postgresql_databases:
+        - name: exampledb 
+          lc_collate: 'en_US.UTF-8'
+          lc_ctype: 'en_US.UTF-8'
+          encoding: 'UTF-8'
+          template: 'template0'
+          login_host: 'localhost'
+          login_password: 'abc123'
+          login_user: "{{ postgresql_admin_user }}"
+          port: 5432
+          state: 'present'
+```
+
+
+## Dependencies
+
+None
 
