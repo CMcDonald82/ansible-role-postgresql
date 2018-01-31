@@ -24,3 +24,15 @@
   stat:
     path: "{{ postgresql_data_directory }}/PG_VERSION"
   register: pgdata_dir_version
+
+- name: Recreate cluster - drop existing
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+  shell: pg_dropcluster --stop {{ postgresql_version }} {{ postgresql_cluster_name }}
+  when: postgresql_cluster_reset and pgdata_dir_exists.changed  
+
+- name: Recreate cluster - start new (with specified locale)
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+  shell: pg_createcluster --start --locale {{ postgresql_locale }} {{ postgresql_version }} {{ postgresql_cluster_name }}
+  when: postgresql_cluster_reset and pgdata_dir_exists.changed 
