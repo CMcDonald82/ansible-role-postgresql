@@ -65,38 +65,44 @@ postgresql_databases: []
 ```
 
 Databases to ensure exist.
-
 Specify entries as a list of hashes having this schema:
-  - name: exampledb # required; the rest are optional
-    lc_collate: # defaults to 'en_US.UTF-8'
-    lc_ctype: # defaults to 'en_US.UTF-8'
-    encoding: # defaults to 'UTF-8'
-    template: # defaults to 'template0'
-    login_host: # defaults to 'localhost'
-    login_password: # defaults to not set
-    login_user: # defaults to '{{ postgresql_user }}'
-    login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
-    port: # defaults to not set
-    state: # defaults to 'present'
+```
+- name: exampledb # required; the rest are optional
+  lc_collate: # defaults to 'en_US.UTF-8'
+  lc_ctype: # defaults to 'en_US.UTF-8'
+  encoding: # defaults to 'UTF-8'
+  template: # defaults to 'template0'
+  login_host: # defaults to 'localhost'
+  login_password: # defaults to not set
+  login_user: # defaults to '{{ postgresql_user }}'
+  login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
+  port: # defaults to not set
+  state: # defaults to 'present'
+```
+
+
 
 ```
 postgresql_users: []
 ```
 
 Users to ensure exist.
-
 Specify entries as a list of hashes having this schema:
-  - name: exampleuser #required; the rest are optional
-    password: # defaults to not set
-    priv: # defaults to not set
-    role_attr_flags: # defaults to not set
-    db: # defaults to not set
-    login_host: # defaults to 'localhost'
-    login_password: # defaults to not set
-    login_user: # defaults to '{{ postgresql_user }}'
-    login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
-    port: # defaults to not set
-    state: # defaults to 'present'
+```
+- name: exampleuser #required; the rest are optional
+  password: # defaults to not set
+  priv: # defaults to not set
+  role_attr_flags: # defaults to not set
+  db: # defaults to not set
+  login_host: # defaults to 'localhost'
+  login_password: # defaults to not set
+  login_user: # defaults to '{{ postgresql_user }}'
+  login_unix_socket: # defaults to 1st of postgresql_unix_socket_directories
+  port: # defaults to not set
+  state: # defaults to 'present'
+```
+
+
 
 ```
 postgresql_hba_entries:
@@ -107,8 +113,8 @@ postgresql_hba_entries:
 ```
 
 Authenticated connections that will be inserted in `pg_hba.conf`. These won't overwrite the default local idents, which are left untouched as they are useful and safe.
-
 Specify entries as a list of hashes having this schema:
+```
   - type: local
     user: postgres
     method: peer
@@ -116,25 +122,35 @@ Specify entries as a list of hashes having this schema:
     address: '192.168.0.0/24'   # optional
     options:                    # optional
       key: value
+```
+
+
 
 ```
 postgresql_ident_entries: []
 ```
 
 Authenticated connections that will be inserted in `pg_ident.conf`. These won't overwrite the default local idents, which are left untouched as they are useful and safe.
-
 Specify entries as a list of hashes having this schema:
+```
   - name: map_a
     user: system_user
     pg_user: postgresql_user
+```
+
+
 
 ```
 postgresql_env: {}
 ```
 
 A dict whose `key: value`s will be provided as environment variables for the postmaster. Use the format:
+```
   - KEY1: value1
   - KEY2: value2
+```
+
+
 
 ```
 postgresql_pg_ctl_options: []
