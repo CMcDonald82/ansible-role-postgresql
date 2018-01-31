@@ -1,6 +1,8 @@
 # ansible-role-postgresql
-Ansible role for installing and configuring PostgreSQL on an Ubuntu server
 
+[![Build Status](https://travis-ci.org/CMcDonald82/ansible-role-postgresql.svg?branch=master)](https://travis-ci.org/CMcDonald82/ansible-role-postgresql)
+
+Ansible role for installing and configuring PostgreSQL on an Ubuntu server
 
 ## Requirements
 
