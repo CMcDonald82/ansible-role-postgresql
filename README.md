@@ -107,11 +107,7 @@ Specify entries as a list of hashes having this schema:
 
 
 ```
-postgresql_hba_entries:
-  - type: local
-    user: "{{ deploy_username }}"
-    method: md5
-    database: all
+postgresql_hba_entries: []
 ```
 
 Authenticated connections that will be inserted in `pg_hba.conf`. These won't overwrite the default local idents, which are left untouched as they are useful and safe.
