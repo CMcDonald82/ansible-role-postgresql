@@ -26,11 +26,7 @@ postgresql_users: []
 postgresql_ident_entries: []
 postgresql_env: {}
 postgresql_pg_ctl_options: []
-postgresql_hba_entries: 
-  - type: local
-    user: "{{ deploy_username }}"
-    method: md5
-    database: all                
+postgresql_hba_entries: []               
 
 
 #------------------------------------------------------------------------------
