@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure PostgreSQL data directory exists
+- name: PostgreSQL | Ensure PostgreSQL data directory exists
   become: yes
   file: 
     path: "{{ postgresql_data_directory }}"
@@ -10,7 +10,7 @@
     mode: 0700
   register: pgdata_dir_exists
 
-- name: Ensure the locale for lc_collate and lc_ctype is generated
+- name: PostgreSQL | Ensure the locale for lc_collate and lc_ctype is generated
   become: yes
   locale_gen:
     name: "{{ item }}"
@@ -19,7 +19,7 @@
     - "{{ postgresql_locale }}"
     - "{{ postgresql_ctype }}"
 
-- name: Check if PostgreSQL is initialized
+- name: PostgreSQL | Check if PostgreSQL is initialized
   become: yes
   stat:
     path: "{{ postgresql_data_directory }}/PG_VERSION"

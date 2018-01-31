@@ -1,6 +1,6 @@
 ---
 
-- name: Add PostgreSQL repository apt-key
+- name: PostgreSQL | Add PostgreSQL repository apt-key
   become: yes
   apt_key:
     id: "{{ postgresql_apt_key_id }}"
@@ -8,13 +8,13 @@
     state: present
   when: postgresql_apt_key_id and postgresql_apt_key_url
 
-- name: Add PostgreSQL repository
+- name: PostgreSQL | Add PostgreSQL repository
   apt_repository:
     repo: "{{ postgresql_apt_repository }}"
     state: present
   when: postgresql_apt_repository | default('') != ''
 
-- name: Install PostgreSQL dependencies
+- name: PostgreSQL | Install PostgreSQL dependencies
   apt:
     name: "{{ item }}"
     state: present
@@ -22,7 +22,7 @@
     cache_valid_time: "{{ apt_cache_valid_time | d(3600) }}"
   with_items: "{{ postgresql_dependencies }}"
 
-- name: Install PostgreSQL
+- name: PostgreSQL | Install PostgreSQL
   apt: 
     name: "{{ item }}"
     state: present
