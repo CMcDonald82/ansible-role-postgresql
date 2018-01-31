@@ -1,0 +1,29 @@
+---
+
+# We need sudo for some of the Docker commands.
+sudo: required
+
+services: 
+  - docker
+
+env:
+  - distro: ubuntu1604
+    postgresql_bin_dir: /usr/lib/postgresql/10/bin
+    postgresql_data_dir: /var/lib/postgresql/10/main
+
+script:
+  # Configure test script so we can run extra tests after playbook is run.
+  - export container_id=$(date +%s)
+  - export cleanup=false
+
+  # Download test script
+  - wget -O ${PWD}/tests/test.sh https://gist.githubusercontent.com/geerlingguy/73ef1e5ee45d8694570f334be385e181/raw/
+  
+  # Add execute privileges to all script files that will be run
+  - chmod +x ${PWD}/tests/test.sh
+
+  # Run tests
+  - ${PWD}/tests/test.sh
+
+  # Check PostgreSQL status
+  - 'docker exec -u postgres ${container_id} ${postgresql_bin_dir}/pg_ctl -D ${postgresql_data_dir} status'
