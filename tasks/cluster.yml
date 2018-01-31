@@ -1,0 +1,19 @@
+---
+
+# Docs: https://www.postgresql.org/docs/current/static/creating-cluster.html
+# if the dbs haven't been created yet, we want to destroy the whole db
+# cluster and recreate it with proper utf8 support.
+# pg_createcluster and pg_dropcluster are provided by the postgresql-common package and should be able to be used instead of initdb
+# see https://askubuntu.com/questions/371737/install-postgresql-why-is-initdb-unavailable
+
+- name: Recreate cluster - drop existing
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+  shell: pg_dropcluster --stop {{ postgresql_version }} {{ postgresql_cluster_name }}
+  when: postgresql_cluster_reset and pgdata_dir_exists.changed  
+
+- name: Recreate cluster - start new (with specified locale)
+  become: yes
+  become_user: "{{ postgresql_admin_user }}"
+  shell: pg_createcluster --start --locale {{ postgresql_locale }} {{ postgresql_version }} {{ postgresql_cluster_name }}
+  when: postgresql_cluster_reset and pgdata_dir_exists.changed 

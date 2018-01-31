@@ -1,0 +1,52 @@
+---
+
+- name: Ensure PostgreSQL configuration directory exists
+  become: yes
+  file:
+    path: "{{ postgresql_conf_directory }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    state: directory
+    mode: 0750
+
+- name: Configure PostgreSQL
+  become: yes
+  template:
+    src: "{{ item }}"
+    dest: "{{ postgresql_conf_directory }}/{{ item }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    mode: 0644
+  with_items:
+    - postgresql.conf
+    - pg_ctl.conf
+    - pg_ident.conf
+    - start.conf
+    - environment
+  notify: restart postgresql 
+
+- name: Configure PostgreSQL (Authentication - pg_hba.conf)
+  become: yes
+  template:
+    src: pg_hba.conf
+    dest: "{{ postgresql_hba_file }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    mode: 0640
+  notify: restart postgresql 
+
+- name: Ensure PostgreSQL runtime (pid) directory exists
+  file:
+    path: "{{ postgresql_runtime_directory }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    state: directory
+    mode: 0775
+
+- name: Ensure PostgreSQL log directory exists
+  file:
+    path: "{{ postgresql_log_directory }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    state: directory
+    mode: 0755

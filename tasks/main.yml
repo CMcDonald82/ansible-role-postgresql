@@ -4,6 +4,8 @@
 
 - include_tasks: initialize.yml
 
+- include_tasks: cluster.yml
+
 - include_tasks: extensions.yml
 
 - include_tasks: configure.yml

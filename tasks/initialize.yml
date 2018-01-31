@@ -1,0 +1,26 @@
+---
+
+- name: Ensure PostgreSQL data directory exists
+  become: yes
+  file: 
+    path: "{{ postgresql_data_directory }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    state: directory
+    mode: 0700
+  register: pgdata_dir_exists
+
+- name: Ensure the locale for lc_collate and lc_ctype is generated
+  become: yes
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ postgresql_locale }}"
+    - "{{ postgresql_ctype }}"
+
+- name: Check if PostgreSQL is initialized
+  become: yes
+  stat:
+    path: "{{ postgresql_data_directory }}/PG_VERSION"
+  register: pgdata_dir_version
