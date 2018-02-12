@@ -914,7 +914,7 @@ postgresql_restart_after_crash: on
 #------------------------------------------------------------------------------
 
 # If enabled, this will install the contrib packages.
-postgresql_ext_install_contrib: no
+postgresql_ext_install_contrib: yes
 
 # If enabled, will install the [PostGIS] extension
 # from the repositories, at the indicated version.
