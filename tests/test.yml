@@ -7,7 +7,9 @@
     postgresql_databases:
       - name: exampledb
     postgresql_users:
-      - name: deploy
+      - name: postgres
+        password: postgres
+        encrypted: no
         db: exampledb
 
   pre_tasks:
