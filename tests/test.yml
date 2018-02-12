@@ -10,7 +10,7 @@
     postgresql_users:
       - name: postgres
         password: postgres
-        encrypted: no
+        encrypted: yes
         db: exampledb
 
   pre_tasks:
