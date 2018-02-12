@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure PostgreSQL databases are present
+- name: PostgreSQL | Ensure PostgreSQL databases are present
   postgresql_db:
     name: "{{ item.name }}"
     lc_collate: "{{ item.lc_collate | d(postgresql_locale) }}"

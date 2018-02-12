@@ -1,6 +1,6 @@
 ---
 
-- name: Ensure the PostgreSQL users are present
+- name: PostgreSQL | Ensure the PostgreSQL users are present
   postgresql_user:
     name: "{{ item.name }}"
     password: "{{ item.password | d(omit) }}"
