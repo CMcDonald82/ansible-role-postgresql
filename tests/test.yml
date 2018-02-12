@@ -6,6 +6,7 @@
   vars:
     postgresql_databases:
       - name: exampledb
+        password: postgres
     postgresql_users:
       - name: deploy
 
@@ -22,7 +23,7 @@
         state: present
       with_items: #"{{ postgresql_dependencies }}"
         - python-psycopg2
-        
+
   roles:
     - role_under_test
 
