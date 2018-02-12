@@ -9,3 +9,5 @@
 - include_tasks: extensions.yml
 
 - include_tasks: configure.yml
+
+- include_tasks: databases.yml
