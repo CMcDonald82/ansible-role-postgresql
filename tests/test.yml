@@ -6,9 +6,9 @@
   vars:
     postgresql_databases:
       - name: exampledb
-        login_password: postgres
     postgresql_users:
       - name: deploy
+        db: exampledb
 
   pre_tasks:
     - name: Update apt cache.
