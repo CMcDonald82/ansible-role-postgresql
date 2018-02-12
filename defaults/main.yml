@@ -923,4 +923,4 @@ postgresql_ext_install_postgis: no
 postgresql_postgis_version: 2.4
 
 # If enabled, this will install the development headers.
-postgresql_ext_install_dev_headers: no
+postgresql_ext_install_dev_headers: yes
