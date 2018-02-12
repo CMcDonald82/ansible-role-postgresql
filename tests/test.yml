@@ -6,6 +6,7 @@
   vars:
     postgresql_databases:
       - name: exampledb
+        login_password: postgres
     postgresql_users:
       - name: postgres
         password: postgres
