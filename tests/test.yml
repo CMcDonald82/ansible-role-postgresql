@@ -8,10 +8,10 @@
       - name: exampledb
         # login_password: postgres
     postgresql_users:
-      - name: postgres
-        # password: postgres
-        # encrypted: yes
-        # db: exampledb
+      - name: deploy
+        password: postgres
+        encrypted: yes
+        db: exampledb
 
   pre_tasks:
     - name: Update apt cache.
