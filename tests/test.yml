@@ -24,7 +24,7 @@
       apt:
         name: "{{ item }}"
         state: present
-      with_items: #"{{ postgresql_dependencies }}"
+      with_items: 
         - python-psycopg2
 
   roles:
