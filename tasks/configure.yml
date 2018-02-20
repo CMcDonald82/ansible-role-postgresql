@@ -9,31 +9,31 @@
     state: directory
     mode: 0750
 
-# - name: PostgreSQL | Configure PostgreSQL
-#   become: yes
-#   template:
-#     src: "{{ item }}"
-#     dest: "{{ postgresql_conf_directory }}/{{ item }}"
-#     owner: "{{ postgresql_admin_user }}"
-#     group: "{{ postgresql_admin_group }}"
-#     mode: 0644
-#   with_items:
-#     - postgresql.conf
-#     - pg_ctl.conf
-#     - pg_ident.conf
-#     - start.conf
-#     - environment
-#   notify: restart postgresql 
+- name: PostgreSQL | Configure PostgreSQL
+  become: yes
+  template:
+    src: "{{ item }}"
+    dest: "{{ postgresql_conf_directory }}/{{ item }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    mode: 0644
+  with_items:
+    - postgresql.conf
+    - pg_ctl.conf
+    - pg_ident.conf
+    - start.conf
+    - environment
+  notify: restart postgresql 
 
-# - name: PostgreSQL | Configure PostgreSQL (Authentication - pg_hba.conf)
-#   become: yes
-#   template:
-#     src: pg_hba.conf
-#     dest: "{{ postgresql_hba_file }}"
-#     owner: "{{ postgresql_admin_user }}"
-#     group: "{{ postgresql_admin_group }}"
-#     mode: 0640
-#   notify: restart postgresql 
+- name: PostgreSQL | Configure PostgreSQL (Authentication - pg_hba.conf)
+  become: yes
+  template:
+    src: pg_hba.conf
+    dest: "{{ postgresql_hba_file }}"
+    owner: "{{ postgresql_admin_user }}"
+    group: "{{ postgresql_admin_group }}"
+    mode: 0640
+  notify: restart postgresql 
 
 - name: PostgreSQL | Ensure PostgreSQL runtime (pid) directory exists
   file:
