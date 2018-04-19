@@ -1,14 +1,29 @@
 ---
 
-- include_tasks: install.yml
+- import_tasks: install.yml
+  tags:
+    - postgresql
+    - postgresql_install
 
-- include_tasks: initialize.yml
+- import_tasks: initialize.yml
+  tags:
+    - postgresql
+    - postgresql_initialize
 
-- include_tasks: cluster.yml
+- import_tasks: cluster.yml
+  tags:
+    - postgresql
+    - postgresql_cluster
+  
+- import_tasks: extensions.yml
+  tags:
+    - postgresql
+    - postgresql_extensions
 
-- include_tasks: extensions.yml
-
-- include_tasks: configure.yml
+- import_tasks: configure.yml
+  tags:
+    - postgresql
+    - postgresql_configure
 
 - name: PostgreSQL | Ensure PostgreSQL is started and enabled on boot
   service:
@@ -16,6 +31,12 @@
     state: started
     enabled: yes
     
-- include_tasks: databases.yml
+- import_tasks: databases.yml
+  tags:
+    - postgresql
+    - postgresql_databases
 
-- include_tasks: users.yml
+- import_tasks: users.yml
+  tags:
+    - postgresql
+    - postgresql_users
